@@ -25,6 +25,7 @@ public class VentanaPrincipal extends JFrame {
 		setLocationRelativeTo(null);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setResizable(false);
+		setLayout(null); 
 		setTitle("CONTACTOS");
 		inicializarComponentes();
 		setVisible(true);
@@ -34,7 +35,21 @@ public class VentanaPrincipal extends JFrame {
 		
 		contacTable = new JTable(dataRowObjects,rowName);
 		JScrollPane scrollPane = new JScrollPane(contacTable);
+		scrollPane.setBounds(40, 40, 400, 300);
 		add(scrollPane);
+		
+		buttonAdd = new JButton("Añadir contacto");
+		buttonAdd.setBounds(30,400,150,30);
+		add(buttonAdd);
+		
+		buttonDelete = new JButton("Borrar contacto");
+		buttonDelete.setBounds(370,400,150,30);
+		add(buttonDelete);
+		
+		buttonEdit = new JButton("Editar contacto");
+		buttonEdit.setBounds(450,100,200,60);
+		add(buttonEdit);
+		
 	}
 
 	public JButton getButtonAdd() {
