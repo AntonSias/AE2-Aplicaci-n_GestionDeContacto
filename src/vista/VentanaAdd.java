@@ -7,6 +7,8 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JTextArea;
 
+import controlador.Controlador;
+
 public class VentanaAdd extends JFrame{
 
 	private JLabel lbNombre, lbTelefono;
@@ -58,6 +60,11 @@ public class VentanaAdd extends JFrame{
 		cancelButton.setBounds(200,190,90,30);
 		add(cancelButton);
 		
+	}
+	
+	public void setControlador(Controlador controlador) {
+		okButton.addActionListener(controlador);
+		cancelButton.addActionListener(controlador);
 	}
 	
 	public JLabel getLbNombre() {
