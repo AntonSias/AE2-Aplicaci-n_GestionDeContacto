@@ -23,8 +23,14 @@ public class Controlador implements ActionListener{
 			this.ventanaAdd = new VentanaAdd();
 		    this.ventanaEdit = new VentanaEdit(); 
 		    
+		    ventanaPrincipal.setControlador(this);//
+		    ventanaAdd.setControlador(this);
+		    ventanaEdit.setControlador(this);
+		    
 		    ventanaAdd.setVisible(false);
 		    ventanaEdit.setVisible(false);
+		    
+		    
 		}
 		
 		public Controlador (VentanaAdd ventanaAdd) {
@@ -53,25 +59,33 @@ public class Controlador implements ActionListener{
 			//Boton add
 			if(e.getSource() == ventanaPrincipal.getButtonAdd()) {
 				
-				ventanaAdd.setVisible(true);
+				// Mostrar la ventana de añadir desde el controlador principal
+		        mostrarVentanaAdd();
+		        // Ocultar la ventana principal
+		        ventanaPrincipal.setVisible(false);
+				/*ventanaAdd.setVisible(true);
 				Controlador controlador = new Controlador(ventanaAdd);
 				ventanaAdd.setControlador(controlador);
-				ventanaPrincipal.setVisible(false);
+				ventanaPrincipal.setVisible(false);*/
 			}
 			
 			//Boton edit
 			if(e.getSource() == ventanaPrincipal.getButtonEdit()) {
 				
-				int fila_selec = ventanaPrincipal.getIndexTable();
-				String valorNombreString = (String) ventanaPrincipal.getContacTable().getValueAt(fila_selec, 0);
-				String valorTelefonoString =(String) ventanaPrincipal.getContacTable().getValueAt(fila_selec, 1);
-				
-				ventanaEdit.setVisible(true);
-				Controlador controlador = new Controlador(ventanaEdit);
-				ventanaEdit.setControlador(controlador);
-				ventanaEdit.getNomnJTextArea().setText(valorNombreString);
-				ventanaEdit.getTelefonoJTextArea().setText(valorTelefonoString);
-				ventanaPrincipal.setVisible(false);
+				try {
+					int fila_selec = ventanaPrincipal.getIndexTable();
+					String valorNombreString = (String) ventanaPrincipal.getContacTable().getValueAt(fila_selec, 0);
+					String valorTelefonoString =(String) ventanaPrincipal.getContacTable().getValueAt(fila_selec, 1);
+					
+					ventanaEdit.setVisible(true);
+					//Controlador controlador = new Controlador(ventanaEdit);
+					//ventanaEdit.setControlador(controlador);
+					ventanaEdit.getNomnJTextArea().setText(valorNombreString);
+					ventanaEdit.getTelefonoJTextArea().setText(valorTelefonoString);
+					ventanaPrincipal.setVisible(false);
+				} catch (IndexOutOfBoundsException e2) {
+					JOptionPane.showMessageDialog(null, "Seleccione un contacto", "Aviso", JOptionPane.INFORMATION_MESSAGE);
+				}
 			}
 			
 			//Botton delete
@@ -84,7 +98,30 @@ public class Controlador implements ActionListener{
 			
 			//VENTANA ADD
 			//boton ok
-			if(e.getSource() == ventanaAdd.getOkButton()) {
+			
+			
+			if (e.getSource() == ventanaAdd.getOkButton()) {
+		        if (ventanaAdd.getNomnJTextArea().getText().isEmpty()) {
+		            JOptionPane.showMessageDialog(null, "El nombre del contacto está vacío", "Aviso", JOptionPane.INFORMATION_MESSAGE);
+		        } else if (ventanaAdd.getTelefonoJTextArea().getText().isEmpty()) {
+		            JOptionPane.showMessageDialog(null, "El teléfono del contacto está vacío", "Aviso", JOptionPane.INFORMATION_MESSAGE);
+		        } else {
+		            // Obtener el modelo de la tabla
+		            DefaultTableModel modelo = ventanaPrincipal.getTableModel();
+		            // Añadir una nueva fila al final
+		            modelo.addRow(new String[]{ventanaAdd.getNomnJTextArea().getText(), ventanaAdd.getTelefonoJTextArea().getText()});
+		            // Limpiar campos de la ventana de añadir
+		            ventanaAdd.getNomnJTextArea().setText("");
+		            ventanaAdd.getTelefonoJTextArea().setText("");
+		            // Mostrar mensaje de éxito
+		            JOptionPane.showMessageDialog(null, "Contacto añadido con éxito", "Aviso", JOptionPane.INFORMATION_MESSAGE);
+		            
+		            // Hacer visible la ventana principal y ocultar la de añadir
+		            ventanaPrincipal.setVisible(true);
+		            ventanaAdd.setVisible(false);
+		        }
+		    }
+			/*if(e.getSource() == ventanaAdd.getOkButton()) {
 				if(ventanaAdd.getNomnJTextArea().getText().isEmpty()) {
 					JOptionPane.showMessageDialog(null, "El nombre del contacto está vacío", "Aviso", JOptionPane.INFORMATION_MESSAGE);
 					
@@ -92,14 +129,20 @@ public class Controlador implements ActionListener{
 					JOptionPane.showMessageDialog(null, "El teléfono del contacto está vacío", "Aviso", JOptionPane.INFORMATION_MESSAGE);
 					
 				}else {
+					
+					
 					JOptionPane.showMessageDialog(null, "Contacto añadido con éxito", "Aviso", JOptionPane.INFORMATION_MESSAGE);
+					
 					ventanaPrincipal.getTableModel().addRow(new String[] {ventanaAdd.getNomnJTextArea().getText(), ventanaAdd.getTelefonoJTextArea().getText()});
+					
 					ventanaPrincipal.setVisible(true);
+					
 					Controlador controlador = new Controlador(ventanaPrincipal);
 					ventanaPrincipal.setControlador(controlador);
 					ventanaAdd.setVisible(false);
 				}
-			}
+			}*/
+			
 			
 			//boton cancel
 			if(e.getSource() == ventanaAdd.getCancelButton()) {
@@ -119,9 +162,16 @@ public class Controlador implements ActionListener{
 				}else {
 					JOptionPane.showMessageDialog(null, "Contacto modificado con éxito", "Aviso", JOptionPane.INFORMATION_MESSAGE);
 					ventanaPrincipal.getTableModel().addRow(new String[] {ventanaEdit.getNomnJTextArea().getText(), ventanaEdit.getTelefonoJTextArea().getText()});
+					
+					//borramos el contacto anterior
+					int fila_selec = ventanaPrincipal.getIndexTable();
+					
+					DefaultTableModel modelo = (DefaultTableModel)ventanaPrincipal.getContacTable().getModel();
+					modelo.removeRow(fila_selec);
+					
 					ventanaPrincipal.setVisible(true);
-					Controlador controlador = new Controlador(ventanaPrincipal);
-					ventanaPrincipal.setControlador(controlador);
+					//Controlador controlador = new Controlador(ventanaPrincipal);
+					//ventanaPrincipal.setControlador(controlador);
 					ventanaEdit.setVisible(false);
 				}
 				
@@ -135,5 +185,8 @@ public class Controlador implements ActionListener{
 			
 		}
 		
+		public void mostrarVentanaAdd() {
+	        ventanaAdd.setVisible(true);
+	    }
 		
 }
