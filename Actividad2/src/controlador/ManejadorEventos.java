@@ -25,7 +25,7 @@ public class ManejadorEventos implements ActionListener {
         if (e.getSource() == Ventana.getBotonAdd()) {
            
 
-            ventanaContacto = new NewContac(this);
+            ventanaContacto = new NewContac();
             ventanaContacto.setVisible(true);
             ventanaContacto.getCajaNombre().requestFocus();
         }

@@ -36,6 +36,7 @@ public class VentanaPrincipal extends JFrame {
     }
 
     private void inicializarVariables() {
+    	 System.out.println("VentanaPrincipal creada");
         botonAdd = new JButton();
         botonAdd.setBounds(225, 500, 50, 50);
         botonAdd.setText("Añadir");
@@ -63,7 +64,15 @@ public class VentanaPrincipal extends JFrame {
         add(scrollPane);
     }
 
-    public DefaultTableModel getTableModel() {
+    public JTable getTable() {
+		return table;
+	}
+
+	public void setTable(JTable table) {
+		this.table = table;
+	}
+
+	public DefaultTableModel getTableModel() {
         return tableModel;
     }
 

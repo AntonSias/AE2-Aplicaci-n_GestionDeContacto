@@ -15,11 +15,11 @@ import controlador.ManejadorEventos;
 public class NewContac extends JFrame {
     JTextField cajaNombre, cajaPhone;
     JLabel nombre, phone;
-    JButton B1, B2;
+    JButton BADD, BCancel;
     ManejadorEventos manejador;
 
-    public NewContac(ManejadorEventos manejador1) {
-        this.manejador = manejador1;
+    public NewContac() {
+        System.out.println("NewContac creada");
         setTitle("Nuevo Contacto");
         setBounds(900, 450, 450, 350);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -29,15 +29,15 @@ public class NewContac extends JFrame {
     }
 
     public void iniciarVariables() {
-        B1 = new JButton();
-        B1.setBounds(270, 270, 65, 20);
-        B1.setText("OK");
-        add(B1);
+        BADD = new JButton();
+        BADD.setBounds(270, 270, 65, 20);
+        BADD.setText("OK");
+        add(BADD);
 
-        B2 = new JButton();
-        B2.setBounds(340, 270, 85, 20);
-        B2.setText("Cancel");
-        add(B2);
+        BCancel = new JButton();
+        BCancel.setBounds(340, 270, 85, 20);
+        BCancel.setText("Cancel");
+        add(BCancel);
 
         cajaNombre = new JTextField();
         cajaNombre.setBounds(153, 100, 190, 30);
@@ -60,15 +60,13 @@ public class NewContac extends JFrame {
         phone.setBounds(80, 135, 100, 100);
         phone.setFont(new Font("Arial", Font.BOLD, 14));
         add(phone);
-        
-      
     }
 
     public void establecerListeners(ManejadorEAdd manejadorEAdd) {
-        B1.addActionListener(manejadorEAdd);
+        BADD.addActionListener(manejadorEAdd);
     }
 
-    // Getter and Setter para tus componentes
+    // Getter and Setter
     // ...
 
     public JTextField getCajaNombre() {
@@ -87,20 +85,20 @@ public class NewContac extends JFrame {
         this.cajaPhone = cajaPhone;
     }
 
-    public JButton getB1() {
-        return B1;
+    public JButton getBADD() {
+        return BADD;
     }
 
-    public void setB1(JButton b1) {
-        B1 = b1;
+    public void setBADD(JButton bADD) {
+        BADD = bADD;
     }
 
-    public JButton getB2() {
-        return B2;
+    public JButton getBCancel() {
+        return BCancel;
     }
 
-    public void setB2(JButton b2) {
-        B2 = b2;
+    public void setBCancel(JButton bCancel) {
+        BCancel = bCancel;
     }
 
     public JLabel getNombre() {
