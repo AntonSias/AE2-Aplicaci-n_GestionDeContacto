@@ -25,7 +25,7 @@ public class Editar extends JFrame {
         setTitle("Editar contacto");
         ImageIcon icon = new ImageIcon("SADAM1.jpeg");
         setBounds(900, 80, 450, 350);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
      
         iniciarVariables();
