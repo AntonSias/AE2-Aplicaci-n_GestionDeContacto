@@ -104,5 +104,11 @@ public class Editar extends JFrame {
 	public void setCajaPhone(JTextField cajaPhone) {
 		this.cajaPhone = cajaPhone;
 	}
-    
+	 public String getNombre() {
+	        return cajaNombre.getText();
+	    }
+
+	    public String getTelefono() {
+	        return cajaPhone.getText();
+	    }
 }

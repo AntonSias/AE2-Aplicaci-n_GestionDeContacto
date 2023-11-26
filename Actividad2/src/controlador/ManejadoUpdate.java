@@ -7,18 +7,33 @@ import vista.Editar;
 import vista.VentanaPrincipal;
 
 public class ManejadoUpdate implements ActionListener {
-VentanaPrincipal Ventana;
-Editar VentanaUpdate;
- 
-public ManejadoUpdate (VentanaPrincipal Ventana, Editar VentanaUpdate) {
-	this.Ventana=Ventana;
-	this.VentanaUpdate= VentanaUpdate;
-}
+    VentanaPrincipal ventanaPrincipal;
+    Editar ventanaEditar;
 
+    public ManejadoUpdate(VentanaPrincipal ventanaPrincipal, Editar ventanaEditar) {
+        this.ventanaPrincipal = ventanaPrincipal;
+        this.ventanaEditar = ventanaEditar;
+    }
 
-	@Override
-	public void actionPerformed(ActionEvent e) {
-	
-	}
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        if (e.getSource() == ventanaEditar.getBEO()) {
+           
+            String nuevoNombre = ventanaEditar.getNombre();
+            String nuevoTelefono = ventanaEditar.getTelefono();
 
+           
+            int selectedRow = ventanaPrincipal.getTable().getSelectedRow();
+            ventanaPrincipal.getTableModel().setValueAt(nuevoNombre, selectedRow, 0);
+            ventanaPrincipal.getTableModel().setValueAt(nuevoTelefono, selectedRow, 1);
+
+          
+            ventanaEditar.dispose();
+        }
+        if(e.getSource() == ventanaEditar.getBEC()) {
+            
+            ventanaEditar.getCajaNombre().setText("");
+            ventanaEditar.getCajaPhone().setText("");
+        }
+    }
 }

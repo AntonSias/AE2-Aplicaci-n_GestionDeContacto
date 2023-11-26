@@ -34,9 +34,8 @@ public class NewContac extends JFrame {
         BADD.setText("OK");
         add(BADD);
 
-        BCancel = new JButton();
+        BCancel = new JButton("Borrar");
         BCancel.setBounds(340, 270, 85, 20);
-        BCancel.setText("Cancel");
         add(BCancel);
 
         cajaNombre = new JTextField();
@@ -67,8 +66,7 @@ public class NewContac extends JFrame {
        BCancel.addActionListener(actionListener);
     }
 
-    // Getter and Setter
-    // ...
+  
 
     public JTextField getCajaNombre() {
         return cajaNombre;
