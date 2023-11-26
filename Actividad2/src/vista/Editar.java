@@ -2,6 +2,8 @@ package vista;
 
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.event.ActionListener;
+
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -14,13 +16,13 @@ import controlador.ManejadorEventos;
 
 public class Editar extends JFrame {
 
-    JButton B1E, B2E;
+    JButton BEO, BEC;
     JTextField cajaNombre, cajaPhone;
     JLabel nombre, phone;
 	private ManejadorEventos manejador;
     
 
-    public Editar(ManejadorEventos manejador) {
+    public Editar(ActionListener actionListener) {
     	this.manejador=manejador;
         setTitle("Editar contacto");
         ImageIcon icon = new ImageIcon("SADAM1.jpeg");
@@ -34,15 +36,15 @@ public class Editar extends JFrame {
     }
 
     public void iniciarVariables() {
-        B1E = new JButton();
-        B1E.setBounds(270, 270, 65, 20);
-        B1E.setText("OK");
-        add(B1E);
+        BEO = new JButton();
+        BEO.setBounds(270, 270, 65, 20);
+        BEO.setText("OK");
+        add(BEO);
 
-        B2E = new JButton();
-        B2E.setBounds(340, 270, 85, 20);
-        B2E.setText("Cancel");
-        add(B2E);
+        BEC = new JButton();
+        BEC.setBounds(340, 270, 85, 20);
+        BEC.setText("Cancel");
+        add(BEC);
 
         cajaNombre = new JTextField();
         cajaNombre.setBounds(153, 100, 190, 30);
@@ -65,38 +67,42 @@ public class Editar extends JFrame {
         phone.setBounds(80, 135, 100, 100);
         phone.setFont(new Font("Arial", Font.BOLD, 14));
     }
-
-    public JButton getB1E() {
-        return B1E;
+  
+    public void establecerListeners(ActionListener actionListener) {
+    	BEO.addActionListener(actionListener);
+    	BEC.addActionListener(actionListener);
     }
 
-    public void setB1E(JButton b1e) {
-        B1E = b1e;
-    }
+	public JButton getBEO() {
+		return BEO;
+	}
 
-    public JButton getB2E() {
-        return B2E;
-    }
+	public void setBEO(JButton bEO) {
+		BEO = bEO;
+	}
 
-    public void setB2E(JButton b2e) {
-        B2E = b2e;
-    }
+	public JButton getBEC() {
+		return BEC;
+	}
 
-    public JTextField getCajaNombre() {
-        return cajaNombre;
-    }
+	public void setBEC(JButton bEC) {
+		BEC = bEC;
+	}
 
-    public void setCajaNombre(JTextField cajaNombre) {
-        this.cajaNombre = cajaNombre;
-    }
+	public JTextField getCajaNombre() {
+		return cajaNombre;
+	}
 
-    public JTextField getCajaPhone() {
-        return cajaPhone;
-    }
+	public void setCajaNombre(JTextField cajaNombre) {
+		this.cajaNombre = cajaNombre;
+	}
 
-    public void setCajaPhone(JTextField cajaPhone) {
-        this.cajaPhone = cajaPhone;
-    }
+	public JTextField getCajaPhone() {
+		return cajaPhone;
+	}
 
-   
+	public void setCajaPhone(JTextField cajaPhone) {
+		this.cajaPhone = cajaPhone;
+	}
+    
 }

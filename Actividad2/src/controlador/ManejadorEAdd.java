@@ -1,13 +1,13 @@
 package controlador;
 
+import vista.NewContac;
+import vista.VentanaPrincipal;
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
-
-import vista.NewContac;
-import vista.VentanaPrincipal;
 
 public class ManejadorEAdd implements ActionListener {
     VentanaPrincipal ventanaPrincipal;
@@ -29,11 +29,18 @@ public class ManejadorEAdd implements ActionListener {
                 JOptionPane.showMessageDialog(null, "Escriba su teléfono", "Aviso", JOptionPane.INFORMATION_MESSAGE);
             } else {
                 DefaultTableModel modelo = ventanaPrincipal.getTableModel();
-                modelo.addRow(new String[]{
+                modelo.addRow(new String[] {
                         ventanaContacto.getCajaNombre().getText(),
-                        ventanaContacto.getCajaPhone().getText()});
+                        ventanaContacto.getCajaPhone().getText()
+                });
                 ventanaContacto.dispose();
             }
         }
-    }
+        
+        if(e.getSource() == ventanaContacto.getBCancel()) {
+           
+            ventanaContacto.getCajaNombre().setText("");
+            ventanaContacto.getCajaPhone().setText("");
+        }
+}
 }

@@ -10,22 +10,22 @@ import javax.swing.JLabel;
 import javax.swing.JTextField;
 
 import controlador.ManejadorEAdd;
-import controlador.ManejadorEventos;
 
 public class NewContac extends JFrame {
     JTextField cajaNombre, cajaPhone;
     JLabel nombre, phone;
     JButton BADD, BCancel;
-    ManejadorEventos manejador;
 
-    public NewContac() {
-        System.out.println("NewContac creada");
+    public NewContac(ActionListener actionListener) {
         setTitle("Nuevo Contacto");
         setBounds(900, 450, 450, 350);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         iniciarVariables();
         setLayout(null);
         setVisible(false);
+
+        
+        establecerListeners(actionListener);
     }
 
     public void iniciarVariables() {
@@ -62,8 +62,9 @@ public class NewContac extends JFrame {
         add(phone);
     }
 
-    public void establecerListeners(ManejadorEAdd manejadorEAdd) {
-        BADD.addActionListener(manejadorEAdd);
+    public void establecerListeners(ActionListener actionListener) {
+        BADD.addActionListener(actionListener);
+       BCancel.addActionListener(actionListener);
     }
 
     // Getter and Setter
