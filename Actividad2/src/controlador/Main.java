@@ -1,6 +1,9 @@
 package controlador;
 
 import vista.VentanaPrincipal;
+
+import javax.swing.SwingUtilities;
+
 import vista.NewContac;
 
 public class Main {
@@ -12,5 +15,7 @@ public class Main {
         ManejadorEventos manejadorEventos = new ManejadorEventos(ventanaPrincipal);
 
         ventanaPrincipal.establecerManejador(manejadorEventos);
+   
+      
     }
 }

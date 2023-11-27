@@ -28,7 +28,7 @@ public class Editar extends JFrame {
         ImageIcon icon = new ImageIcon("SADAM1.jpeg");
         setBounds(900, 80, 450, 350);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-
+        getContentPane().setBackground(new java.awt.Color(238, 209, 69));
      
         iniciarVariables();
         setLayout(null);
@@ -49,7 +49,7 @@ public class Editar extends JFrame {
         cajaNombre = new JTextField();
         cajaNombre.setBounds(153, 100, 190, 30);
         cajaNombre.setFont(new Font("Dialog", Font.BOLD, 14));
-        cajaNombre.setForeground(new Color(102, 0, 153));
+        cajaNombre.setForeground(new Color(169, 30, 0 ));
         add(cajaNombre);
 
         nombre = new JLabel("Nombre");
@@ -60,7 +60,7 @@ public class Editar extends JFrame {
         cajaPhone = new JTextField();
         cajaPhone.setBounds(153, 170, 190, 30);
         cajaPhone.setFont(new Font("Dialog", Font.BOLD, 14));
-        cajaPhone.setForeground(new Color(102, 0, 153));
+        cajaPhone.setForeground(new Color(169, 30, 0 ));
         add(cajaPhone);
 
         phone = new JLabel("Teléfono");
