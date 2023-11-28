@@ -1,39 +1,82 @@
 package vista;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.FlowLayout;
+import java.awt.Font;
+import java.awt.GradientPaint;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Rectangle;
+import java.awt.Toolkit;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
-
+import controlador.*;
 import controlador.Controlador;
 
 public class VentanaPrincipal extends JFrame {
 	
-	private JButton buttonAdd, buttonDelete, buttonEdit;
+	private RoundButton buttonAdd, buttonDelete, buttonEdit;
 	private JTable contacTable;
 	private DefaultTableModel tableModel;
 	private JScrollPane scrollPane;
 	private String [] rowName = {"Nombre", "Teléfono"};
-	private Object [][] dataRowObjects = {
-			{"Antón","697861309"},
-			{"Antón","697861309"},
-			{"Antón","697861309"},
-			{"Antón","697861309"},
-			{"Antón","697861309"}
-	};
+	private String rutaArchivoString = "contactos.txt";
+	private List<Contacto> listaContactos = cargarContactosDesdeArchivo();
+	private Color color1 = new Color(0xFFFFF); 
+	private Color color2 = new Color(0x106AB6);
 	
+	
+
 	public VentanaPrincipal() {
 		
-		setSize(700,600);
+		setSize(400,600);
 		setLocationRelativeTo(null);
+		
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setResizable(false);
 		setLayout(null); 
 		setTitle("CONTACTOS");
+		setIconImage(Toolkit.getDefaultToolkit().getImage("imagen1.png"));
 		inicializarComponentes();
 		setVisible(true);
+		setLayout(new BorderLayout());
+		final JPanel panelPersonalizado = new JPanel() {
+		    @Override
+		    protected void paintComponent(Graphics g) {
+		        super.paintComponent(g);
+		        Graphics2D g2 = (Graphics2D) g.create();
+		        Rectangle clip = g2.getClipBounds();
+		        float x = getWidth();
+		        float y = getHeight();
+		        g2.setPaint(new GradientPaint(0.0f, 0.0f, color1.darker(), 0.0f, (float) getHeight(), color2.darker()));
+		        g2.fillRect(clip.x, clip.y, clip.width, clip.height);
+		        g2.dispose();
+		    }
+		};
+
+        panelPersonalizado.setLayout(null);  // Usa un diseño nulo para el panel personalizado
+        panelPersonalizado.setBounds(0, 0, getWidth(), getHeight());
+
+        
+
+        add(panelPersonalizado);  // Agrega el panel personalizado al marco*/
+		
 	}
 	
 	public DefaultTableModel getTableModel() {
@@ -46,30 +89,48 @@ public class VentanaPrincipal extends JFrame {
 
 	public void inicializarComponentes() {
 		
-		/*contacTable = new JTable(dataRowObjects,rowName);
-		JScrollPane scrollPane = new JScrollPane(contacTable);
-		scrollPane.setBounds(40, 40, 400, 300);
-		add(scrollPane);*/
+		
 		
 		tableModel = new DefaultTableModel(rowName,0);
 		contacTable = new JTable(tableModel);
 		scrollPane = new JScrollPane(contacTable);
-		scrollPane.setBounds(40, 40, 400, 300);
+		scrollPane.setBounds(90, 100, 200, 100);
 		add(scrollPane);
 		
-		buttonAdd = new JButton("Añadir contacto");
-		buttonAdd.setBounds(30,400,150,30);
+		//Introducimos los contactos desde el archivo
+		for (Contacto contacto : listaContactos) {
+            tableModel.addRow(new String[]{contacto.getNombre(), Long.toString(contacto.getTelefono()) });
+        }
+		
+		buttonAdd = new RoundButton("Añadir contacto");
+		buttonAdd.setBounds(90,250,200,50);
+		buttonAdd.setFont(new Font("Dialog", Font.BOLD, 14));
+        buttonAdd.setForeground(Color.black);
+        buttonAdd.setBackground(new Color(0x32C4C0));
 		add(buttonAdd);
 		
-		buttonDelete = new JButton("Borrar contacto");
-		buttonDelete.setBounds(370,400,150,30);
+		buttonDelete = new RoundButton("Borrar contacto");
+		buttonDelete.setBounds(90,330,200,50);
+		buttonDelete.setFont(new Font("Dialog", Font.BOLD, 14));
+        buttonDelete.setForeground(Color.black);
+        buttonDelete.setBackground(new Color(0x32C4C0));
 		add(buttonDelete);
 		
-		buttonEdit = new JButton("Editar contacto");
-		buttonEdit.setBounds(450,100,200,60);
+		buttonEdit = new RoundButton("Editar contacto");
+		buttonEdit.setBounds(90,410,200,50);
+		buttonEdit.setFont(new Font("Dialog", Font.BOLD, 14));
+        buttonEdit.setForeground(Color.black);
+        buttonEdit.setBackground(new Color(0x32C4C0));
 		add(buttonEdit);
 		
+		buttonAdd.setBackground(color1.darker());
+	    buttonDelete.setBackground(color1.darker());
+	    buttonEdit.setBackground(color1.darker());
+	    contacTable.setBackground(color1.darker());
+	    scrollPane.setBackground(color1.darker());
+		
 	}
+	
 	
 	public void setControlador(Controlador controlador) {
 		buttonAdd.addActionListener(controlador);
@@ -89,7 +150,7 @@ public class VentanaPrincipal extends JFrame {
 		return buttonAdd;
 	}
 
-	public void setButtonAdd(JButton buttonAdd) {
+	public void setButtonAdd(RoundButton buttonAdd) {
 		this.buttonAdd = buttonAdd;
 	}
 
@@ -97,7 +158,7 @@ public class VentanaPrincipal extends JFrame {
 		return buttonDelete;
 	}
 
-	public void setButtonDelete(JButton buttonDelete) {
+	public void setButtonDelete(RoundButton buttonDelete) {
 		this.buttonDelete = buttonDelete;
 	}
 
@@ -105,7 +166,7 @@ public class VentanaPrincipal extends JFrame {
 		return buttonEdit;
 	}
 
-	public void setButtonEdit(JButton buttonEdit) {
+	public void setButtonEdit(RoundButton buttonEdit) {
 		this.buttonEdit = buttonEdit;
 	}
 
@@ -117,5 +178,56 @@ public class VentanaPrincipal extends JFrame {
 		this.contacTable = contacTable;
 	}
 	
+	public List<Contacto> getListaContactos() {
+		return listaContactos;
+	}
+
+	public void setListaContactos(List<Contacto> listaContactos) {
+		this.listaContactos = listaContactos;
+	}
 	
+	public Color getColor1() {
+		return color1;
+	}
+
+	public void setColor1(Color color1) {
+		this.color1 = color1;
+	}
+
+	public Color getColor2() {
+		return color2;
+	}
+
+	public void setColor2(Color color2) {
+		this.color2 = color2;
+	}
+	
+	private List<Contacto> cargarContactosDesdeArchivo() {
+        // Ruta del archivo de texto
+        String rutaArchivo = "contactos.txt";
+        List<Contacto> contactos = new ArrayList<>();
+
+        try {
+            // Crear un BufferedReader para leer el archivo
+            BufferedReader reader = new BufferedReader(new FileReader(new File(rutaArchivo)));
+
+            // Leer cada línea del archivo y agregar un nuevo contacto a la lista
+            String linea;
+            while ((linea = reader.readLine()) != null) {
+                String[] campos = linea.split(",");
+                if (campos.length == 2) {
+                    contactos.add(new Contacto(campos[0], Integer.parseInt(campos[1])));
+                }
+            }
+
+            // Cerrar el BufferedReader
+            reader.close();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(null, "Error al leer el archivo.");
+        }
+
+        return contactos;
+    }
 }

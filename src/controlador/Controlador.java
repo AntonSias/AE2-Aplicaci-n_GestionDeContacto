@@ -2,23 +2,45 @@ package controlador;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 import javax.swing.tree.DefaultTreeCellEditor.EditorContainer;
 
+import vista.Menu;
 import vista.VentanaAdd;
 import vista.VentanaEdit;
 import vista.VentanaPrincipal;
 
 public class Controlador implements ActionListener{
-
+		
+		private Menu menu;
 		private VentanaPrincipal ventanaPrincipal;
 		private VentanaAdd ventanaAdd;
 		private VentanaEdit ventanaEdit;
 		
-		public Controlador(VentanaPrincipal ventanaPrincipal) {
+		public Controlador(Menu menu) {
+			this.menu = menu;
+			this.ventanaPrincipal = new VentanaPrincipal();
+			this.ventanaAdd = new VentanaAdd();
+			this.ventanaEdit = new VentanaEdit();
+			
+			menu.setControlador(this);
+			ventanaPrincipal.setControlador(this);
+		    ventanaAdd.setControlador(this);
+		    ventanaEdit.setControlador(this);
+		    
+		    ventanaPrincipal.setVisible(false);
+		    ventanaAdd.setVisible(false);
+		    ventanaEdit.setVisible(false);
+		    
+		}
+		/*public Controlador(VentanaPrincipal ventanaPrincipal) {
 			this.ventanaPrincipal = ventanaPrincipal;
 			this.ventanaAdd = new VentanaAdd();
 		    this.ventanaEdit = new VentanaEdit(); 
@@ -31,29 +53,17 @@ public class Controlador implements ActionListener{
 		    ventanaEdit.setVisible(false);
 		    
 		    
-		}
-		
-		public Controlador (VentanaAdd ventanaAdd) {
-			this.ventanaAdd = ventanaAdd;
-			this.ventanaEdit = new VentanaEdit();
-			this.ventanaPrincipal = new VentanaPrincipal();
-			
-			ventanaPrincipal.setVisible(false);
-			ventanaEdit.setVisible(false);
-		}
-		
-		public Controlador (VentanaEdit ventanaEdit) {
-			this.ventanaEdit = ventanaEdit;
-			this.ventanaAdd = new VentanaAdd();
-			this.ventanaPrincipal = new VentanaPrincipal();
-			
-			ventanaPrincipal.setVisible(false);
-			ventanaAdd.setVisible(false);
-		}
-
+		}*/
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
+			
+			//MENU
+			//Boton menu
+			if(e.getSource() == menu.getMenuButton()) {
+				ventanaPrincipal.setVisible(true);
+				menu.setVisible(false);
+			}
 			
 			//VENTANA PRINCIPAL
 			//Boton add
@@ -63,23 +73,19 @@ public class Controlador implements ActionListener{
 		        mostrarVentanaAdd();
 		        // Ocultar la ventana principal
 		        ventanaPrincipal.setVisible(false);
-				/*ventanaAdd.setVisible(true);
-				Controlador controlador = new Controlador(ventanaAdd);
-				ventanaAdd.setControlador(controlador);
-				ventanaPrincipal.setVisible(false);*/
+				
 			}
 			
 			//Boton edit
 			if(e.getSource() == ventanaPrincipal.getButtonEdit()) {
-				
+				System.out.println("boton edit presionado");
 				try {
 					int fila_selec = ventanaPrincipal.getIndexTable();
 					String valorNombreString = (String) ventanaPrincipal.getContacTable().getValueAt(fila_selec, 0);
 					String valorTelefonoString =(String) ventanaPrincipal.getContacTable().getValueAt(fila_selec, 1);
 					
 					ventanaEdit.setVisible(true);
-					//Controlador controlador = new Controlador(ventanaEdit);
-					//ventanaEdit.setControlador(controlador);
+					
 					ventanaEdit.getNomnJTextArea().setText(valorNombreString);
 					ventanaEdit.getTelefonoJTextArea().setText(valorTelefonoString);
 					ventanaPrincipal.setVisible(false);
@@ -89,27 +95,59 @@ public class Controlador implements ActionListener{
 			}
 			
 			//Botton delete
-			if(e.getSource() == ventanaPrincipal.getButtonDelete()) {
-				int fila_selec = ventanaPrincipal.getIndexTable();
+				if (e.getSource() == ventanaPrincipal.getButtonDelete()) {
+				System.out.println("Boton borrar presionado");
+				ventanaPrincipal.getButtonDelete().removeActionListener(this);
+				    int fila_selec = ventanaPrincipal.getIndexTable();
+				    
+				    // Imprimir valores de diagnóstico
+				    System.out.println("Fila seleccionada: " + fila_selec);
+				    System.out.println("Tamaño de listaContactos: " + ventanaPrincipal.getListaContactos().size());
+
+				    if (fila_selec >= 0 && fila_selec < ventanaPrincipal.getListaContactos().size()) {
+				        Contacto contactoABorrar = ventanaPrincipal.getListaContactos().get(fila_selec);
+
+				        // Borrar el contacto de la lista
+						ventanaPrincipal.getListaContactos().remove(contactoABorrar);
+
+			            // Borrar la fila correspondiente en el modelo de la tabla
+			            ventanaPrincipal.getTableModel().removeRow(fila_selec);
+
+			            // Escribir la estructura de datos actualizada en el archivo
+			            escribirContactoEnArchivo();
+			            
+			            
+				    } else {
+				        JOptionPane.showMessageDialog(null, "Contacto borrado con éxito");
+				    }
+				}
 				
-				DefaultTableModel modelo = (DefaultTableModel)ventanaPrincipal.getContacTable().getModel();
-				modelo.removeRow(fila_selec);
-			}
+				
 			
 			//VENTANA ADD
 			//boton ok
 			
 			
 			if (e.getSource() == ventanaAdd.getOkButton()) {
+				
+				String nombreString = ventanaAdd.getNomnJTextArea().getText();
+				String telefonoString = ventanaAdd.getTelefonoJTextArea().getText();
+						
 		        if (ventanaAdd.getNomnJTextArea().getText().isEmpty()) {
 		            JOptionPane.showMessageDialog(null, "El nombre del contacto está vacío", "Aviso", JOptionPane.INFORMATION_MESSAGE);
 		        } else if (ventanaAdd.getTelefonoJTextArea().getText().isEmpty()) {
 		            JOptionPane.showMessageDialog(null, "El teléfono del contacto está vacío", "Aviso", JOptionPane.INFORMATION_MESSAGE);
 		        } else {
+		        	
+		        	 Contacto nuevoContacto = new Contacto(nombreString, Integer.parseInt(telefonoString));
+		             ventanaPrincipal.getListaContactos().add(nuevoContacto);
 		            // Obtener el modelo de la tabla
 		            DefaultTableModel modelo = ventanaPrincipal.getTableModel();
+		            
 		            // Añadir una nueva fila al final
-		            modelo.addRow(new String[]{ventanaAdd.getNomnJTextArea().getText(), ventanaAdd.getTelefonoJTextArea().getText()});
+		            modelo.addRow(new String[]{nombreString, telefonoString});
+		            //Escribimos en el archivo
+		            escribirContactoEnArchivo();
 		            // Limpiar campos de la ventana de añadir
 		            ventanaAdd.getNomnJTextArea().setText("");
 		            ventanaAdd.getTelefonoJTextArea().setText("");
@@ -121,27 +159,7 @@ public class Controlador implements ActionListener{
 		            ventanaAdd.setVisible(false);
 		        }
 		    }
-			/*if(e.getSource() == ventanaAdd.getOkButton()) {
-				if(ventanaAdd.getNomnJTextArea().getText().isEmpty()) {
-					JOptionPane.showMessageDialog(null, "El nombre del contacto está vacío", "Aviso", JOptionPane.INFORMATION_MESSAGE);
-					
-				} else if (ventanaAdd.getTelefonoJTextArea().getText().isEmpty()) {
-					JOptionPane.showMessageDialog(null, "El teléfono del contacto está vacío", "Aviso", JOptionPane.INFORMATION_MESSAGE);
-					
-				}else {
-					
-					
-					JOptionPane.showMessageDialog(null, "Contacto añadido con éxito", "Aviso", JOptionPane.INFORMATION_MESSAGE);
-					
-					ventanaPrincipal.getTableModel().addRow(new String[] {ventanaAdd.getNomnJTextArea().getText(), ventanaAdd.getTelefonoJTextArea().getText()});
-					
-					ventanaPrincipal.setVisible(true);
-					
-					Controlador controlador = new Controlador(ventanaPrincipal);
-					ventanaPrincipal.setControlador(controlador);
-					ventanaAdd.setVisible(false);
-				}
-			}*/
+			
 			
 			
 			//boton cancel
@@ -161,17 +179,27 @@ public class Controlador implements ActionListener{
 					
 				}else {
 					JOptionPane.showMessageDialog(null, "Contacto modificado con éxito", "Aviso", JOptionPane.INFORMATION_MESSAGE);
-					ventanaPrincipal.getTableModel().addRow(new String[] {ventanaEdit.getNomnJTextArea().getText(), ventanaEdit.getTelefonoJTextArea().getText()});
+					
 					
 					//borramos el contacto anterior
 					int fila_selec = ventanaPrincipal.getIndexTable();
 					
-					DefaultTableModel modelo = (DefaultTableModel)ventanaPrincipal.getContacTable().getModel();
-					modelo.removeRow(fila_selec);
+					ventanaPrincipal.getListaContactos().get(fila_selec).setNombre(ventanaEdit.getNomnJTextArea().getText());
+					ventanaPrincipal.getListaContactos().get(fila_selec).setTelefono(Integer.parseInt(ventanaEdit.getTelefonoJTextArea().getText()) );
+	                
+
+	                // Actualizar la fila en el modelo de la tabla
+	                ventanaPrincipal.getTableModel().setValueAt(ventanaEdit.getNomnJTextArea().getText(), fila_selec, 0);
+	                ventanaPrincipal.getTableModel().setValueAt(ventanaEdit.getTelefonoJTextArea().getText(), fila_selec, 1);
+	                
+
+	                // Escribir la estructura de datos actualizada en el archivo
+	                escribirContactoEnArchivo();
+					
+					/*DefaultTableModel modelo = (DefaultTableModel)ventanaPrincipal.getContacTable().getModel();
+					modelo.removeRow(fila_selec);*/
 					
 					ventanaPrincipal.setVisible(true);
-					//Controlador controlador = new Controlador(ventanaPrincipal);
-					//ventanaPrincipal.setControlador(controlador);
 					ventanaEdit.setVisible(false);
 				}
 				
@@ -188,5 +216,31 @@ public class Controlador implements ActionListener{
 		public void mostrarVentanaAdd() {
 	        ventanaAdd.setVisible(true);
 	    }
+		
+		 private void escribirContactoEnArchivo() {
+			// Ruta del archivo de texto
+		        String rutaArchivo = "contactos.txt";
+
+		        try {
+		            // Crear un BufferedWriter para escribir en el archivo
+		            // El segundo parámetro (false) indica que se sobrescribirá el archivo
+		            BufferedWriter writer = new BufferedWriter(new FileWriter(new File(rutaArchivo), false));
+
+		            // Escribir cada contacto en una nueva línea del archivo
+		            for (Contacto contacto : ventanaPrincipal.getListaContactos()) {
+		                writer.write(contacto.getNombre() + "," + Long.toString(contacto.getTelefono()) );
+		                writer.newLine();
+		            }
+
+		            // Cerrar el BufferedWriter
+		            writer.close();
+
+		        } catch (IOException e) {
+		            e.printStackTrace();
+		            JOptionPane.showMessageDialog(null, "Error al escribir en el archivo.");
+		        }
+		    }
+		 
+		 
 		
 }
