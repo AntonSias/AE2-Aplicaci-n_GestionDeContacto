@@ -10,6 +10,7 @@ import java.awt.Font;
 import java.awt.GradientPaint;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Image;
 import java.awt.Rectangle;
 import java.awt.Toolkit;
 import java.io.BufferedReader;
@@ -18,8 +19,10 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -40,6 +43,7 @@ public class VentanaPrincipal extends JFrame {
 	private List<Contacto> listaContactos = cargarContactosDesdeArchivo();
 	private Color color1 = new Color(0xFFFFF); 
 	private Color color2 = new Color(0x106AB6);
+	private JLabel img, logo;
 	
 	
 
@@ -107,13 +111,23 @@ public class VentanaPrincipal extends JFrame {
 		buttonAdd.setFont(new Font("Dialog", Font.BOLD, 14));
         buttonAdd.setForeground(Color.black);
         buttonAdd.setBackground(new Color(0x32C4C0));
+        Image img =new ImageIcon("UsuarioAdd.png").getImage();
+		logo=new JLabel(new ImageIcon(img.getScaledInstance(45, 45, Image.SCALE_SMOOTH)));
+		logo.setBounds(40,250,50,50);
+		add(logo);
 		add(buttonAdd);
+		
+		
 		
 		buttonDelete = new RoundButton("Borrar contacto");
 		buttonDelete.setBounds(90,330,200,50);
 		buttonDelete.setFont(new Font("Dialog", Font.BOLD, 14));
         buttonDelete.setForeground(Color.black);
         buttonDelete.setBackground(new Color(0x32C4C0));
+        Image img1 =new ImageIcon("UsuarioDelete.png").getImage();
+		logo=new JLabel(new ImageIcon(img1.getScaledInstance(60, 60, Image.SCALE_SMOOTH)));
+		logo.setBounds(35,330,50,50);
+		add(logo);
 		add(buttonDelete);
 		
 		buttonEdit = new RoundButton("Editar contacto");
@@ -121,6 +135,10 @@ public class VentanaPrincipal extends JFrame {
 		buttonEdit.setFont(new Font("Dialog", Font.BOLD, 14));
         buttonEdit.setForeground(Color.black);
         buttonEdit.setBackground(new Color(0x32C4C0));
+        Image img2 =new ImageIcon("UsuarioUpdate.png").getImage();
+		logo=new JLabel(new ImageIcon(img2.getScaledInstance(60, 60, Image.SCALE_AREA_AVERAGING)));
+		logo.setBounds(35,408,50,50);
+		add(logo);
 		add(buttonEdit);
 		
 		buttonAdd.setBackground(color1.darker());
