@@ -1,10 +1,18 @@
 package vista;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.GradientPaint;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Rectangle;
+import java.awt.Toolkit;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JPanel;
 import javax.swing.JTextArea;
 
 import controlador.Controlador;
@@ -13,51 +21,85 @@ public class VentanaAdd extends JFrame{
 
 	private JLabel lbNombre, lbTelefono;
 	private JTextArea nombrJTextArea, telfJTextArea;
-	private JButton okButton, cancelButton;
+	private RoundButton okButton, cancelButton;
+	private Color color1 = new Color(0xFFFFF); 
+	private Color color2 = new Color(0x106AB6);
 	
 	
 	
 	public VentanaAdd() {
 		
-		setSize(400,300);
+		setSize(400,600);
 		setLocationRelativeTo(null);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setResizable(false);
 		setLayout(null); 
 		setTitle("Añadir contacto");
+		setIconImage(Toolkit.getDefaultToolkit().getImage("imagen1.png"));
 		inicializarComponentes();
 		setVisible(true);
+		setLayout(new BorderLayout());
+		final JPanel panelPersonalizado = new JPanel() {
+		    @Override
+		    protected void paintComponent(Graphics g) {
+		        super.paintComponent(g);
+		        Graphics2D g2 = (Graphics2D) g.create();
+		        Rectangle clip = g2.getClipBounds();
+		        float x = getWidth();
+		        float y = getHeight();
+		        g2.setPaint(new GradientPaint(0.0f, 0.0f, color1.darker(), 0.0f, (float) getHeight(), color2.darker()));
+		        g2.fillRect(clip.x, clip.y, clip.width, clip.height);
+		        g2.dispose();
+		    }
+		};
+
+        panelPersonalizado.setLayout(null);  // Usa un diseño nulo para el panel personalizado
+        panelPersonalizado.setBounds(0, 0, getWidth(), getHeight());
+
+        
+
+        add(panelPersonalizado); 
 	}
 	
 	public void inicializarComponentes() {
 		//label nombre
 		lbNombre = new JLabel("Nombre");
-		lbNombre.setBounds(70, 60, 100, 30);
+		lbNombre.setBounds(75, 145, 100, 30);
+		lbNombre.setFont(new Font("Dialog", Font.BOLD, 14));
 		add(lbNombre);
 		
 		//label telefono
 		lbTelefono = new JLabel("Teléfono");
-		lbTelefono.setBounds(70, 110, 100, 30);
+		lbTelefono.setBounds(75, 195, 100, 30);
+		lbTelefono.setFont(new Font("Dialog", Font.BOLD, 14));
 		add(lbTelefono);
 		
 		//textArea nombre
 		nombrJTextArea = new JTextArea();
-		nombrJTextArea.setBounds(160, 60, 160, 30);
+		nombrJTextArea.setBounds(145, 150, 160, 25);
+		nombrJTextArea.setFont(new Font("Dialog", Font.PLAIN, 14));
 		add(nombrJTextArea);
 		
 		//txtArea telefono
 		telfJTextArea = new JTextArea();
-		telfJTextArea.setBounds(160, 110, 160, 30);
+		telfJTextArea.setBounds(145, 200, 160, 25);
+		telfJTextArea.setFont(new Font("Dialog", Font.PLAIN, 14));
 		add(telfJTextArea);
 		
 		//boton ok
-		okButton = new JButton("OK");
-		okButton.setBounds(100,190,90,30);
+		okButton = new RoundButton("OK");
+		okButton.setBounds(100,290,200,50);
+		okButton.setFont(new Font("Dialog", Font.BOLD, 14));
+        okButton.setForeground(Color.black);
+        okButton.setBackground(new Color(0x32C4C0));
 		add(okButton);
 		
 		//boton cancel
-		cancelButton = new JButton("Cancel");
-		cancelButton.setBounds(200,190,90,30);
+		cancelButton = new RoundButton("Cancel");
+		cancelButton.setBounds(100,370,200,50);
+		cancelButton.setFont(new Font("Dialog", Font.BOLD, 14));
+        cancelButton.setForeground(Color.black);
+        cancelButton.setBackground(new Color(0x32C4C0));
 		add(cancelButton);
 		
 	}
@@ -103,7 +145,7 @@ public class VentanaAdd extends JFrame{
 		return okButton;
 	}
 
-	public void setOkButton(JButton okButton) {
+	public void setOkButton(RoundButton okButton) {
 		this.okButton = okButton;
 	}
 
@@ -111,7 +153,7 @@ public class VentanaAdd extends JFrame{
 		return cancelButton;
 	}
 
-	public void setCancelButton(JButton cancelButton) {
+	public void setCancelButton(RoundButton cancelButton) {
 		this.cancelButton = cancelButton;
 	}
 

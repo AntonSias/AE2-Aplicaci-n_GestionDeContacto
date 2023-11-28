@@ -12,17 +12,35 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 import javax.swing.tree.DefaultTreeCellEditor.EditorContainer;
 
+import vista.Menu;
 import vista.VentanaAdd;
 import vista.VentanaEdit;
 import vista.VentanaPrincipal;
 
 public class Controlador implements ActionListener{
-
+		
+		private Menu menu;
 		private VentanaPrincipal ventanaPrincipal;
 		private VentanaAdd ventanaAdd;
 		private VentanaEdit ventanaEdit;
 		
-		public Controlador(VentanaPrincipal ventanaPrincipal) {
+		public Controlador(Menu menu) {
+			this.menu = menu;
+			this.ventanaPrincipal = new VentanaPrincipal();
+			this.ventanaAdd = new VentanaAdd();
+			this.ventanaEdit = new VentanaEdit();
+			
+			menu.setControlador(this);
+			ventanaPrincipal.setControlador(this);
+		    ventanaAdd.setControlador(this);
+		    ventanaEdit.setControlador(this);
+		    
+		    ventanaPrincipal.setVisible(false);
+		    ventanaAdd.setVisible(false);
+		    ventanaEdit.setVisible(false);
+		    
+		}
+		/*public Controlador(VentanaPrincipal ventanaPrincipal) {
 			this.ventanaPrincipal = ventanaPrincipal;
 			this.ventanaAdd = new VentanaAdd();
 		    this.ventanaEdit = new VentanaEdit(); 
@@ -35,10 +53,17 @@ public class Controlador implements ActionListener{
 		    ventanaEdit.setVisible(false);
 		    
 		    
-		}
+		}*/
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
+			
+			//MENU
+			//Boton menu
+			if(e.getSource() == menu.getMenuButton()) {
+				ventanaPrincipal.setVisible(true);
+				menu.setVisible(false);
+			}
 			
 			//VENTANA PRINCIPAL
 			//Boton add
