@@ -2,13 +2,16 @@ package vista;
 
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.FontFormatException;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
+import javax.swing.SwingConstants;
 
 import controlador.ManejadorEventos;
 
@@ -52,10 +55,24 @@ public class Editar extends JFrame {
         cajaNombre.setForeground(new Color(169, 30, 0 ));
         add(cajaNombre);
 
-        nombre = new JLabel("Nombre");
-        nombre.setBounds(80, 68, 100, 100);
-        nombre.setFont(new Font("Arial", Font.BOLD, 14));
-        add(nombre);
+      
+        try {
+        	nombre = new JLabel("Nombre");
+            
+            Font font = Font.createFont(Font.TRUETYPE_FONT, getClass().getResourceAsStream("Signatra.otf"));
+            nombre.setHorizontalAlignment(SwingConstants.CENTER);
+		    nombre.setFont(font.deriveFont(Font.HANGING_BASELINE, 40f));
+		    nombre.setBounds(80, 68, 100, 100);
+		    nombre.setForeground(Color.black);
+            font = font.deriveFont(Font.PLAIN, 25);
+            nombre.setFont(font);
+            add(nombre);
+        } catch (FontFormatException | IOException e) {
+            e.printStackTrace();
+           
+        }
+      
+      
 
         cajaPhone = new JTextField();
         cajaPhone.setBounds(153, 170, 190, 30);
